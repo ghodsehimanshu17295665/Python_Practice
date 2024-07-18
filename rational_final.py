@@ -19,20 +19,34 @@ class Rational:
         tem.deno = self.deno * value.deno
         tem.nume = self.nume * value.deno - value.nume * self.deno
         return tem
-  
+
     def __mul__(self, value):
         tem = Rational()
         tem.nume = self.nume * value.nume
         tem.deno = self.deno * value.deno
         return tem
-  
+
     def __truediv__(self, value):
         tem = Rational()
         tem.nume = self.nume * value.deno
         tem.deno = self.deno * value.nume
         return tem
 
+    def get_hcf(self, num1, num2):
+        while num2 != 0:
+            remain = num1 % num2
+            num1 = num2
+            num2 = remain
+        return num1
+
+    def simplify(self, num1, num2):
+        hcf = self.get_hcf(num1, num2)
+        return num1 // hcf, num2 // hcf
+
     def show(self, operator, value, result):
+        self.nume, self.deno = self.simplify(self.nume, self.deno)
+        value.nume, value.deno = self.simplify(value.nume, value.deno)
+        result.nume, result.deno = self.simplify(result.nume, result.deno)
         print(
             f"{self.nume}/{self.deno} {operator} {value.nume}/{value.deno} = {result.nume}/{result.deno}"
         )
